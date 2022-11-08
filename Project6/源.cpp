@@ -9,7 +9,8 @@ void menu()
 	printf("********************************************************\n");
 	printf("*********************五    子    棋*********************\n");
 	printf("********************************************************\n");
-	printf("******开始游戏请输入1              结束游戏请输入0******\n");
+	printf("******单人游戏请输入1              双人游戏请输入2******\n");
+	printf("******              结束游戏请输入0               ******\n");
 	printf("********************************************************\n");
 }
 void Initboard(char board[ROW][COL],int row, int col)
@@ -90,6 +91,54 @@ void Computermove(char board[ROW][COL], int row, int col)
 		}
 	}
 }
+void Player1move(char board[ROW][COL], int row, int col)
+{
+	int x, y;
+	printf("P1的回合\n");
+	while (1)
+	{
+		printf("请输入要下的坐标:");
+		scanf_s("%d%d", &x, &y);
+		if (x >= 1 && x <= row && y >= 1 && y <= col)
+		{
+			if (board[x - 1][y - 1] == ' ')
+			{
+				board[x - 1][y - 1] = '*';
+				break;
+			}
+			else {
+				printf("该坐标已被占用，请重新输入╥﹏╥\n");
+			}
+		}
+		else {
+			printf("非法坐标，请重新输入╥﹏╥\n");
+		}
+	}
+}
+void Player2move(char board[ROW][COL], int row, int col)
+{
+	int x, y;
+	printf("P2的回合\n");
+	while (1)
+	{
+		printf("请输入要下的坐标:");
+		scanf_s("%d%d", &x, &y);
+		if (x >= 1 && x <= row && y >= 1 && y <= col)
+		{
+			if (board[x - 1][y - 1] == ' ')
+			{
+				board[x - 1][y - 1] = '#';
+				break;
+			}
+			else {
+				printf("该坐标已被占用，请重新输入╥﹏╥\n");
+			}
+		}
+		else {
+			printf("非法坐标，请重新输入╥﹏╥\n");
+		}
+	}
+}
 int Isp(char board[ROW][COL], int row, int col)
 {
 	int i, j;
@@ -136,7 +185,7 @@ char Judgement(char board[ROW][COL], int row, int col)
 	}
 	return 'C';
 }
-void game()
+void Dgame()
 {
 	char flag = 0;
 	char board[ROW][COL];
@@ -169,6 +218,39 @@ void game()
 	}
 	else printf("流局╥﹏╥\n");
 }
+void Sgame()
+{
+	char flag = 0;
+	char board[ROW][COL];
+	Initboard(board, ROW, COL);
+	Displayboard(board, ROW, COL);
+	while (1)
+	{
+		Player1move(board, ROW, COL);
+		Displayboard(board, ROW, COL);
+		flag = Judgement(board, ROW, COL);
+		if (flag != 'C')
+		{
+			break;
+		}
+		Player2move(board, ROW, COL);
+		Displayboard(board, ROW, COL);
+		flag = Judgement(board, ROW, COL);
+		if (flag != 'C')
+		{
+			break;
+		}
+	}
+	if (flag == '*')
+	{
+		printf("P1赢啦！(≧y≦)/\n");
+	}
+	else if (flag == '#')
+	{
+		printf("P2赢啦！(≧y≦)/\n");
+	}
+	else printf("流局╥﹏╥\n");
+}
 void choose()
 {
 	srand((unsigned int)time(NULL));
@@ -181,9 +263,12 @@ void choose()
 		switch (num)
 		{
 		case 1:
-			game();
+			Dgame();
 			break;
 		case 0:
+			break;
+		case 2:
+			Sgame();
 			break;
 		default:printf("输入错误，请重新输入\n");
 			break;
